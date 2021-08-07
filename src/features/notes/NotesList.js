@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { Link } from 'react-router-dom'
 
-import { fetchNotes, deleteNote } from './notesSlice'
+import { fetchNotes, deleteNote, searchQueryUpdated } from './notesSlice'
 
 export const NotesList = () => {
   const dispatch = useDispatch()
@@ -11,6 +11,7 @@ export const NotesList = () => {
 
   const notesStatus = useSelector((state) => state.notes.status)
   const error = useSelector((state) => state.notes.error)
+  const searchQuery = useSelector((state) => state.notes.searchQuery)
 
   useEffect(() => {
     if (notesStatus === 'idle') {
@@ -30,19 +31,27 @@ export const NotesList = () => {
   if (notesStatus === 'loading') {
     content = <div>Loading...</div>
   } else if (notesStatus === 'succeeded') {
-    const renderedNotes = notes.map((note) => (
-      <tr key={note.id}>
-        <td>{note.title}</td>
-        <td>
-          <Link to={`/edit/${note.id}`} className="button">
-            Edit
-          </Link>
-        </td>
-        <td>
-          <button onClick={() => onDeleteClicked(note.id)}>Delete</button>
-        </td>
-      </tr>
-    ))
+    const renderedNotes = notes
+      .filter((note) => {
+        if (!searchQuery) {
+          return true
+        }
+
+        return note.title.toLowerCase().includes(searchQuery)
+      })
+      .map((note) => (
+        <tr key={note.id}>
+          <td>{note.title}</td>
+          <td>
+            <Link to={`/edit/${note.id}`} className="button">
+              Edit
+            </Link>
+          </td>
+          <td>
+            <button onClick={() => onDeleteClicked(note.id)}>Delete</button>
+          </td>
+        </tr>
+      ))
 
     content = (
       <table>

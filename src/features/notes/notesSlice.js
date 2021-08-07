@@ -5,6 +5,7 @@ const initialState = {
   notes: [],
   status: 'idle',
   error: '',
+  searchQuery: '',
 }
 
 export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
@@ -45,7 +46,11 @@ export const editNote = createAsyncThunk(
 export const notesSlice = createSlice({
   name: 'notes',
   initialState,
-  reducers: {},
+  reducers: {
+    searchQueryUpdated(state, action) {
+      state.searchQuery = action.payload
+    },
+  },
   extraReducers: {
     [fetchNotes.pending]: (state, action) => {
       state.status = 'loading'
@@ -77,5 +82,7 @@ export const notesSlice = createSlice({
     },
   },
 })
+
+export const { searchQueryUpdated } = notesSlice.actions
 
 export default notesSlice.reducer

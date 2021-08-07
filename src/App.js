@@ -9,6 +9,7 @@ import { NotesList } from './features/notes/NotesList'
 import { EditNote } from './features/notes/EditNote'
 import { AddNote } from './features/notes/AddNote'
 import { Navbar } from './app/Navbar'
+import { SearchBar } from './features/notes/SearchBar'
 import { makeServer } from './api/server'
 
 makeServer()
@@ -19,6 +20,7 @@ function App() {
       <div className="App">
         <div className="container">
           <Navbar />
+          <SearchBar />
           <Switch>
             <Route exact path="/" render={() => <NotesList />} />
             <Route exact path="/edit/:noteId" component={EditNote} />
