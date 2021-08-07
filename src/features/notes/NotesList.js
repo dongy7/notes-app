@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { Link } from 'react-router-dom'
 
 import { fetchNotes, deleteNote } from './notesSlice'
 
@@ -33,6 +34,11 @@ export const NotesList = () => {
       <tr key={note.id}>
         <td>{note.title}</td>
         <td>
+          <Link to={`/edit/${note.id}`} className="button">
+            Edit
+          </Link>
+        </td>
+        <td>
           <button onClick={() => onDeleteClicked(note.id)}>Delete</button>
         </td>
       </tr>
@@ -43,6 +49,7 @@ export const NotesList = () => {
         <thead>
           <tr>
             <th>Name</th>
+            <th></th>
             <th></th>
           </tr>
         </thead>
