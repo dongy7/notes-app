@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { useHistory } from 'react-router'
+import { editNote } from './notesSlice'
 
 export const EditNote = ({ match }) => {
   const { noteId } = match.params
@@ -13,6 +16,21 @@ export const EditNote = ({ match }) => {
 
   const onTitleChanged = (e) => setTitle(e.target.value)
   const onContentChanged = (e) => setContent(e.target.value)
+
+  const dispatch = useDispatch()
+  const history = useHistory()
+
+  const onSaveClicked = async () => {
+    try {
+      const resultAction = await dispatch(
+        editNote({ id: noteId, title, content })
+      )
+      unwrapResult(resultAction)
+      history.push('/')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   return (
     <div>
@@ -36,7 +54,9 @@ export const EditNote = ({ match }) => {
           rows={30}
         />
       </form>
-      <button type="button">Save</button>
+      <button type="button" onClick={onSaveClicked}>
+        Save
+      </button>
     </div>
   )
 }

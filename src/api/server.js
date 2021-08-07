@@ -51,9 +51,12 @@ export function makeServer({ environment = 'development' } = {}) {
       })
 
       this.patch('/notes/:id', (schema, request) => {
-        let attrs = JSON.parse(request.requestBody).note
+        let attrs = JSON.parse(request.requestBody)
+        attrs.date = new Date().toISOString()
 
-        return schema.notes.find(request.params.id).update(attrs)
+        schema.notes.find(request.params.id).update(attrs)
+
+        return schema.notes.find(request.params.id)
       })
 
       this.delete('/notes/:id', (schema, request) => {
