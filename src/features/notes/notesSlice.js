@@ -12,6 +12,18 @@ export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
   return response.data.notes
 })
 
+export const createNote = createAsyncThunk(
+  'notes/createNote',
+  async ({ title, content }) => {
+    const response = await axios.post('/api/notes', {
+      title,
+      content,
+    })
+
+    return response.data
+  }
+)
+
 export const deleteNote = createAsyncThunk('notes/deleteNote', async (id) => {
   const response = await axios.delete(`/api/notes/${id}`)
   return response.data
@@ -58,6 +70,10 @@ export const notesSlice = createSlice({
 
       existingNote.title = updatedNote.title
       existingNote.content = updatedNote.content
+    },
+    [createNote.fulfilled]: (state, action) => {
+      const note = action.payload.note
+      state.notes = state.notes.concat(note)
     },
   },
 })

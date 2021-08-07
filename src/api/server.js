@@ -45,7 +45,8 @@ export function makeServer({ environment = 'development' } = {}) {
       })
 
       this.post('/notes', (schema, request) => {
-        let attrs = JSON.parse(request.requestBody).note
+        let attrs = JSON.parse(request.requestBody)
+        attrs.date = new Date().toISOString()
 
         return schema.notes.create(attrs)
       })

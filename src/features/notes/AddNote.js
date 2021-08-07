@@ -1,18 +1,12 @@
 import React, { useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { unwrapResult } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
-import { editNote } from './notesSlice'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { createNote } from './notesSlice'
 
-export const EditNote = ({ match }) => {
-  const { noteId } = match.params
-
-  const note = useSelector((state) => {
-    return state.notes.notes.find((note) => note.id === noteId)
-  })
-
-  const [title, setTitle] = useState(note.title)
-  const [content, setContent] = useState(note.content)
+export const AddNote = () => {
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
 
   const onTitleChanged = (e) => setTitle(e.target.value)
   const onContentChanged = (e) => setContent(e.target.value)
@@ -20,11 +14,15 @@ export const EditNote = ({ match }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const onSaveClicked = async () => {
+  const onCreateClicked = async () => {
     try {
       const resultAction = await dispatch(
-        editNote({ id: noteId, title, content })
+        createNote({
+          title,
+          content,
+        })
       )
+
       unwrapResult(resultAction)
       history.push('/')
     } catch (err) {
@@ -34,7 +32,7 @@ export const EditNote = ({ match }) => {
 
   return (
     <div>
-      <h2>Edit Note</h2>
+      <h2>Create New Note</h2>
       <form>
         <label htmlFor="noteTitle">Note Title:</label>
         <input
@@ -54,8 +52,8 @@ export const EditNote = ({ match }) => {
           rows={30}
         />
       </form>
-      <button type="button" onClick={onSaveClicked}>
-        Save
+      <button type="button" onClick={onCreateClicked}>
+        Create
       </button>
     </div>
   )
