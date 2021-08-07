@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchNotes } from './notesSlice'
+import { unwrapResult } from '@reduxjs/toolkit'
+
+import { fetchNotes, deleteNote } from './notesSlice'
 
 export const NotesList = () => {
   const dispatch = useDispatch()
@@ -15,6 +17,13 @@ export const NotesList = () => {
     }
   }, [notesStatus, dispatch])
 
+  const onDeleteClicked = async (id) => {
+    try {
+      const resultAction = await dispatch(deleteNote(id))
+      unwrapResult(resultAction)
+    } catch (err) {}
+  }
+
   let content
 
   if (notesStatus === 'loading') {
@@ -23,6 +32,9 @@ export const NotesList = () => {
     const renderedNotes = notes.map((note) => (
       <tr key={note.id}>
         <td>{note.title}</td>
+        <td>
+          <button onClick={() => onDeleteClicked(note.id)}>Delete</button>
+        </td>
       </tr>
     ))
 
@@ -31,6 +43,7 @@ export const NotesList = () => {
         <thead>
           <tr>
             <th>Name</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{renderedNotes}</tbody>

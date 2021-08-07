@@ -57,7 +57,11 @@ export function makeServer({ environment = 'development' } = {}) {
       })
 
       this.delete('/notes/:id', (schema, request) => {
-        return schema.notes.find(request.params.id).destroy()
+        const id = request.params.id
+        schema.notes.find(id).destroy()
+        return {
+          id,
+        }
       })
     },
 

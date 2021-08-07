@@ -12,6 +12,11 @@ export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
   return response.data.notes
 })
 
+export const deleteNote = createAsyncThunk('notes/deleteNote', async (id) => {
+  const response = await axios.delete(`/api/notes/${id}`)
+  return response.data
+})
+
 export const notesSlice = createSlice({
   name: 'notes',
   initialState,
@@ -27,6 +32,10 @@ export const notesSlice = createSlice({
     [fetchNotes.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
+    },
+    [deleteNote.fulfilled]: (state, action) => {
+      const id = action.payload.id
+      state.notes = state.notes.filter((note) => note.id !== id)
     },
   },
 })
