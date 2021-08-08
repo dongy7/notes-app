@@ -18,6 +18,8 @@ const initialState = notesAdapter.getInitialState({
   addError: '',
   editStatus: 'idle',
   editError: '',
+  deleteNoteStatus: 'idle',
+  deleteNoteError: '',
 })
 
 export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
@@ -75,7 +77,11 @@ export const notesSlice = createSlice({
       state.loadStatus = 'failed'
       state.loadError = action.error.message
     },
+    [deleteNote.pending]: (state, action) => {
+      state.deleteNoteStatus = 'loading'
+    },
     [deleteNote.fulfilled]: (state, action) => {
+      state.deleteNoteStatus = 'idle'
       const id = action.payload.id
       notesAdapter.removeOne(state, id)
     },
@@ -113,6 +119,10 @@ export const notesSlice = createSlice({
 export const { searchQueryUpdated } = notesSlice.actions
 
 export const selectSearchQuery = (state) => state.notes.searchQuery
+
+export const selectDeleteNoteStatus = (state) => state.notes.deleteNoteStatus
+export const selectAddNoteStatus = (state) => state.notes.addStatus
+export const selectEditNoteStatus = (state) => state.notes.editStatus
 
 export const {
   selectAll: selectAllNotes,

@@ -12,6 +12,7 @@ import {
   selectNoteById,
   selectSearchQuery,
   selectFilteredNotes,
+  selectDeleteNoteStatus,
 } from './notesSlice'
 
 const NoteInfo = ({ noteId }) => {
@@ -50,6 +51,8 @@ export const NotesList = () => {
   const error = useSelector((state) => state.notes.loadError)
   const searchQuery = useSelector((state) => selectSearchQuery(state))
 
+  const deleteNoteStatus = useSelector((state) => selectDeleteNoteStatus(state))
+
   const filteredNotes = useSelector((state) => {
     return selectFilteredNotes(state, searchQuery)
   })
@@ -62,8 +65,12 @@ export const NotesList = () => {
 
   let content
 
+  const spinner = <div className="loader">Loading...</div>
+
   if (notesStatus === 'loading') {
-    content = <div className="loader">Loading...</div>
+    content = spinner
+  } else if (deleteNoteStatus === 'loading') {
+    content = spinner
   } else if (notesStatus === 'succeeded') {
     const renderedNotes = filteredNotes.map((note) => (
       <NoteInfo key={note.id} noteId={note.id} />

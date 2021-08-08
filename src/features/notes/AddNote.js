@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { createNote } from './notesSlice'
+import { createNote, selectAddNoteStatus } from './notesSlice'
 
 export const AddNote = () => {
   const [title, setTitle] = useState('')
@@ -13,7 +13,7 @@ export const AddNote = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
-  const addStatus = useSelector((state) => state.notes.addStatus)
+  const addStatus = useSelector((state) => selectAddNoteStatus(state))
 
   const canAdd = addStatus === 'idle' && !!title
 
@@ -33,6 +33,10 @@ export const AddNote = () => {
         console.log(err)
       }
     }
+  }
+
+  if (addStatus === 'loading') {
+    return <div className="loader">Loading...</div>
   }
 
   return (

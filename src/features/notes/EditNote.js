@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
-import { editNote, selectNoteById } from './notesSlice'
+import { editNote, selectNoteById, selectEditNoteStatus } from './notesSlice'
 
 export const EditNote = ({ match }) => {
   const { noteId } = match.params
@@ -18,7 +18,7 @@ export const EditNote = ({ match }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const editStatus = useSelector((state) => state.notes.editStatus)
+  const editStatus = useSelector((state) => selectEditNoteStatus(state))
   const canSave = editStatus === 'idle' && !!title
 
   const onSaveClicked = async () => {
@@ -33,6 +33,10 @@ export const EditNote = ({ match }) => {
         console.log(err)
       }
     }
+  }
+
+  if (editStatus === 'loading') {
+    return <div className="loader">Loading...</div>
   }
 
   return (
