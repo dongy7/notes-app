@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { createNote } from './notesSlice'
@@ -13,20 +13,25 @@ export const AddNote = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
+  const addStatus = useSelector((state) => state.notes.addStatus)
+
+  const canAdd = addStatus === 'idle' && !!title
 
   const onCreateClicked = async () => {
-    try {
-      const resultAction = await dispatch(
-        createNote({
-          title,
-          content,
-        })
-      )
+    if (canAdd) {
+      try {
+        const resultAction = await dispatch(
+          createNote({
+            title,
+            content,
+          })
+        )
 
-      unwrapResult(resultAction)
-      history.push('/')
-    } catch (err) {
-      console.log(err)
+        unwrapResult(resultAction)
+        history.push('/')
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 

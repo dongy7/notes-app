@@ -20,15 +20,20 @@ export const EditNote = ({ match }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
+  const editStatus = useSelector((state) => state.notes.editStatus)
+  const canSave = editStatus === 'idle' && !!title
+
   const onSaveClicked = async () => {
-    try {
-      const resultAction = await dispatch(
-        editNote({ id: noteId, title, content })
-      )
-      unwrapResult(resultAction)
-      history.push('/')
-    } catch (err) {
-      console.log(err)
+    if (canSave) {
+      try {
+        const resultAction = await dispatch(
+          editNote({ id: noteId, title, content })
+        )
+        unwrapResult(resultAction)
+        history.push('/')
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 

@@ -12,8 +12,8 @@ export const NotesList = () => {
   const dispatch = useDispatch()
   const notes = useSelector((state) => state.notes.notes)
 
-  const notesStatus = useSelector((state) => state.notes.status)
-  const error = useSelector((state) => state.notes.error)
+  const notesStatus = useSelector((state) => state.notes.loadStatus)
+  const error = useSelector((state) => state.notes.loadError)
   const searchQuery = useSelector((state) => state.notes.searchQuery)
 
   useEffect(() => {

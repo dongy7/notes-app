@@ -3,9 +3,13 @@ import axios from 'axios'
 
 const initialState = {
   notes: [],
-  status: 'idle',
-  error: '',
+  loadStatus: 'idle',
+  loadError: '',
   searchQuery: '',
+  addStatus: 'idle',
+  addError: '',
+  editStatus: 'idle',
+  editError: '',
 }
 
 export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
@@ -53,21 +57,25 @@ export const notesSlice = createSlice({
   },
   extraReducers: {
     [fetchNotes.pending]: (state, action) => {
-      state.status = 'loading'
+      state.loadStatus = 'loading'
     },
     [fetchNotes.fulfilled]: (state, action) => {
-      state.status = 'succeeded'
+      state.loadStatus = 'succeeded'
       state.notes = state.notes.concat(action.payload)
     },
     [fetchNotes.rejected]: (state, action) => {
-      state.status = 'failed'
-      state.error = action.error.message
+      state.loadStatus = 'failed'
+      state.loadError = action.error.message
     },
     [deleteNote.fulfilled]: (state, action) => {
       const id = action.payload.id
       state.notes = state.notes.filter((note) => note.id !== id)
     },
+    [editNote.pending]: (state, action) => {
+      state.editStatus = 'loading'
+    },
     [editNote.fulfilled]: (state, action) => {
+      state.editStatus = 'idle'
       const updatedNote = action.payload.note
       const existingNote = state.notes.find(
         (note) => note.id === updatedNote.id
@@ -76,9 +84,21 @@ export const notesSlice = createSlice({
       existingNote.title = updatedNote.title
       existingNote.content = updatedNote.content
     },
+    [editNote.rejected]: (state, action) => {
+      state.editStatus = 'idle'
+      state.editError = action.error.message
+    },
+    [createNote.pending]: (state, action) => {
+      state.addStatus = 'loading'
+    },
     [createNote.fulfilled]: (state, action) => {
+      state.addStatus = 'idle'
       const note = action.payload.note
       state.notes = state.notes.concat(note)
+    },
+    [createNote.rejected]: (state, action) => {
+      state.addStatus = 'idle'
+      state.addError = action.error.message
     },
   },
 })
