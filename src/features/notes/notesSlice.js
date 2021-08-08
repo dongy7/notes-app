@@ -83,6 +83,7 @@ export const notesSlice = createSlice({
 
       existingNote.title = updatedNote.title
       existingNote.content = updatedNote.content
+      existingNote.date = updatedNote.date
     },
     [editNote.rejected]: (state, action) => {
       state.editStatus = 'idle'
