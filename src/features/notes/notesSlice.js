@@ -1,8 +1,15 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+  createAsyncThunk,
+  createSlice,
+  createEntityAdapter,
+} from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const initialState = {
-  notes: [],
+const notesAdapter = createEntityAdapter({
+  sortComparer: (a, b) => b.date.localeCompare(a.date),
+})
+
+const initialState = notesAdapter.getInitialState({
   loadStatus: 'idle',
   loadError: '',
   searchQuery: '',
@@ -10,7 +17,7 @@ const initialState = {
   addError: '',
   editStatus: 'idle',
   editError: '',
-}
+})
 
 export const fetchNotes = createAsyncThunk('notes/fetchNotes', async () => {
   const response = await axios.get('/api/notes')
@@ -61,7 +68,7 @@ export const notesSlice = createSlice({
     },
     [fetchNotes.fulfilled]: (state, action) => {
       state.loadStatus = 'succeeded'
-      state.notes = state.notes.concat(action.payload)
+      notesAdapter.upsertMany(state, action.payload)
     },
     [fetchNotes.rejected]: (state, action) => {
       state.loadStatus = 'failed'
@@ -69,7 +76,7 @@ export const notesSlice = createSlice({
     },
     [deleteNote.fulfilled]: (state, action) => {
       const id = action.payload.id
-      state.notes = state.notes.filter((note) => note.id !== id)
+      notesAdapter.removeOne(state, id)
     },
     [editNote.pending]: (state, action) => {
       state.editStatus = 'loading'
@@ -77,9 +84,7 @@ export const notesSlice = createSlice({
     [editNote.fulfilled]: (state, action) => {
       state.editStatus = 'idle'
       const updatedNote = action.payload.note
-      const existingNote = state.notes.find(
-        (note) => note.id === updatedNote.id
-      )
+      const existingNote = state.entities[updatedNote.id]
 
       existingNote.title = updatedNote.title
       existingNote.content = updatedNote.content
@@ -95,7 +100,7 @@ export const notesSlice = createSlice({
     [createNote.fulfilled]: (state, action) => {
       state.addStatus = 'idle'
       const note = action.payload.note
-      state.notes = state.notes.concat(note)
+      notesAdapter.addOne(state, note)
     },
     [createNote.rejected]: (state, action) => {
       state.addStatus = 'idle'
@@ -105,5 +110,8 @@ export const notesSlice = createSlice({
 })
 
 export const { searchQueryUpdated } = notesSlice.actions
+
+export const { selectAll: selectAllNotes, selectById: selectNoteById } =
+  notesAdapter.getSelectors((state) => state.notes)
 
 export default notesSlice.reducer

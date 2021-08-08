@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { useHistory } from 'react-router'
-import { editNote } from './notesSlice'
+import { editNote, selectNoteById } from './notesSlice'
 
 export const EditNote = ({ match }) => {
   const { noteId } = match.params
 
-  const note = useSelector((state) => {
-    return state.notes.notes.find((note) => note.id === noteId)
-  })
+  const note = useSelector((state) => selectNoteById(state, noteId))
 
   const [title, setTitle] = useState(note.title)
   const [content, setContent] = useState(note.content)

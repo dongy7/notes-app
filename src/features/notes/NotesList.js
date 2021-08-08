@@ -6,11 +6,11 @@ import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
 
-import { fetchNotes, deleteNote } from './notesSlice'
+import { fetchNotes, deleteNote, selectAllNotes } from './notesSlice'
 
 export const NotesList = () => {
   const dispatch = useDispatch()
-  const notes = useSelector((state) => state.notes.notes)
+  const notes = useSelector((state) => selectAllNotes(state))
 
   const notesStatus = useSelector((state) => state.notes.loadStatus)
   const error = useSelector((state) => state.notes.loadError)
