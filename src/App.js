@@ -20,9 +20,17 @@ function App() {
       <div className="App">
         <div className="container">
           <Navbar />
-          <SearchBar />
           <Switch>
-            <Route exact path="/" render={() => <NotesList />} />
+            <Route
+              exact
+              path="/"
+              render={() => (
+                <React.Fragment>
+                  <SearchBar />
+                  <NotesList />
+                </React.Fragment>
+              )}
+            />
             <Route exact path="/edit/:noteId" component={EditNote} />
             <Route exact path="/create" component={AddNote} />
             <Redirect to="/" />
