@@ -58,7 +58,7 @@ export const EditNote = ({ match }) => {
             />
           </div>
           <div className="form-content">
-            <label htmlFor="postContent">Content:</label>
+            <label htmlFor="noteContent">Content:</label>
             <textarea
               id="noteContent"
               name="noteContent"

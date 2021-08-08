@@ -31,13 +31,14 @@ const NoteInfo = ({ noteId }) => {
       <td>{note.title}</td>
       <td>{format(parseISO(note.date), 'MM/dd/yyyy hh:mm aaa')}</td>
       <td>
-        <Link to={`/edit/${note.id}`} className="icon">
+        <Link to={`/edit/${note.id}`} className="icon" data-testid="editLink">
           <FontAwesomeIcon icon={faEdit} />
         </Link>
         <FontAwesomeIcon
           icon={faTimes}
           onClick={onDeleteClicked}
           className="icon"
+          data-testid="deleteIcon"
         />
       </td>
     </tr>
