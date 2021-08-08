@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { Link } from 'react-router-dom'
 
-import { fetchNotes, deleteNote, searchQueryUpdated } from './notesSlice'
+import { fetchNotes, deleteNote } from './notesSlice'
 
 export const NotesList = () => {
   const dispatch = useDispatch()
