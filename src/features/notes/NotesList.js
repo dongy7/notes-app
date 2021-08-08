@@ -32,7 +32,7 @@ export const NotesList = () => {
   let content
 
   if (notesStatus === 'loading') {
-    content = <div>Loading...</div>
+    content = <div className="loader">Loading...</div>
   } else if (notesStatus === 'succeeded') {
     const renderedNotes = notes
       .filter((note) => {
