@@ -9,9 +9,9 @@ import { format, parseISO } from 'date-fns'
 import {
   fetchNotes,
   deleteNote,
-  selectAllNotes,
   selectNoteById,
   selectSearchQuery,
+  selectFilteredNotes,
 } from './notesSlice'
 
 const NoteInfo = ({ noteId }) => {
@@ -48,17 +48,10 @@ export const NotesList = () => {
 
   const notesStatus = useSelector((state) => state.notes.loadStatus)
   const error = useSelector((state) => state.notes.loadError)
+  const searchQuery = useSelector((state) => selectSearchQuery(state))
 
   const filteredNotes = useSelector((state) => {
-    const allNotes = selectAllNotes(state)
-    const searchQuery = selectSearchQuery(state)
-    return allNotes.filter((note) => {
-      if (!searchQuery) {
-        return true
-      }
-
-      return note.title.toLowerCase().includes(searchQuery)
-    })
+    return selectFilteredNotes(state, searchQuery)
   })
 
   useEffect(() => {

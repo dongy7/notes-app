@@ -2,6 +2,7 @@ import {
   createAsyncThunk,
   createSlice,
   createEntityAdapter,
+  createSelector,
 } from '@reduxjs/toolkit'
 import axios from 'axios'
 
@@ -118,5 +119,14 @@ export const {
   selectById: selectNoteById,
   selectIds: selectNoteIds,
 } = notesAdapter.getSelectors((state) => state.notes)
+
+export const selectFilteredNotes = createSelector(
+  [selectSearchQuery, selectAllNotes],
+  (searchQuery, notes) => {
+    return notes.filter((note) =>
+      note.title.toLowerCase().includes(searchQuery)
+    )
+  }
+)
 
 export default notesSlice.reducer
