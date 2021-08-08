@@ -6,15 +6,60 @@ import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
 
-import { fetchNotes, deleteNote, selectAllNotes } from './notesSlice'
+import {
+  fetchNotes,
+  deleteNote,
+  selectAllNotes,
+  selectNoteById,
+  selectSearchQuery,
+} from './notesSlice'
+
+const NoteInfo = ({ noteId }) => {
+  const dispatch = useDispatch()
+
+  const note = useSelector((state) => selectNoteById(state, noteId))
+  const onDeleteClicked = async () => {
+    try {
+      const resultAction = await dispatch(deleteNote(noteId))
+      unwrapResult(resultAction)
+    } catch (err) {}
+  }
+
+  return (
+    <tr>
+      <td>{note.title}</td>
+      <td>{format(parseISO(note.date), 'MM/dd/yyyy hh:mm aaa')}</td>
+      <td>
+        <Link to={`/edit/${note.id}`} className="icon">
+          <FontAwesomeIcon icon={faEdit} />
+        </Link>
+        <FontAwesomeIcon
+          icon={faTimes}
+          onClick={onDeleteClicked}
+          className="icon"
+        />
+      </td>
+    </tr>
+  )
+}
 
 export const NotesList = () => {
   const dispatch = useDispatch()
-  const notes = useSelector((state) => selectAllNotes(state))
 
   const notesStatus = useSelector((state) => state.notes.loadStatus)
   const error = useSelector((state) => state.notes.loadError)
-  const searchQuery = useSelector((state) => state.notes.searchQuery)
+
+  const filteredNotes = useSelector((state) => {
+    const allNotes = selectAllNotes(state)
+    const searchQuery = selectSearchQuery(state)
+    return allNotes.filter((note) => {
+      if (!searchQuery) {
+        return true
+      }
+
+      return note.title.toLowerCase().includes(searchQuery)
+    })
+  })
 
   useEffect(() => {
     if (notesStatus === 'idle') {
@@ -22,42 +67,14 @@ export const NotesList = () => {
     }
   }, [notesStatus, dispatch])
 
-  const onDeleteClicked = async (id) => {
-    try {
-      const resultAction = await dispatch(deleteNote(id))
-      unwrapResult(resultAction)
-    } catch (err) {}
-  }
-
   let content
 
   if (notesStatus === 'loading') {
     content = <div className="loader">Loading...</div>
   } else if (notesStatus === 'succeeded') {
-    const renderedNotes = notes
-      .filter((note) => {
-        if (!searchQuery) {
-          return true
-        }
-
-        return note.title.toLowerCase().includes(searchQuery)
-      })
-      .map((note) => (
-        <tr key={note.id}>
-          <td>{note.title}</td>
-          <td>{format(parseISO(note.date), 'MM/dd/yyyy hh:mm aaa')}</td>
-          <td>
-            <Link to={`/edit/${note.id}`} className="icon">
-              <FontAwesomeIcon icon={faEdit} />
-            </Link>
-            <FontAwesomeIcon
-              icon={faTimes}
-              onClick={() => onDeleteClicked(note.id)}
-              className="icon"
-            />
-          </td>
-        </tr>
-      ))
+    const renderedNotes = filteredNotes.map((note) => (
+      <NoteInfo key={note.id} noteId={note.id} />
+    ))
 
     content = (
       <table>

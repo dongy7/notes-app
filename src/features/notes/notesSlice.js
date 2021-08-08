@@ -111,7 +111,12 @@ export const notesSlice = createSlice({
 
 export const { searchQueryUpdated } = notesSlice.actions
 
-export const { selectAll: selectAllNotes, selectById: selectNoteById } =
-  notesAdapter.getSelectors((state) => state.notes)
+export const selectSearchQuery = (state) => state.notes.searchQuery
+
+export const {
+  selectAll: selectAllNotes,
+  selectById: selectNoteById,
+  selectIds: selectNoteIds,
+} = notesAdapter.getSelectors((state) => state.notes)
 
 export default notesSlice.reducer
