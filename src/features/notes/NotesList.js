@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 
 import { fetchNotes, deleteNote } from './notesSlice'
@@ -43,12 +45,14 @@ export const NotesList = () => {
         <tr key={note.id}>
           <td>{note.title}</td>
           <td>
-            <Link to={`/edit/${note.id}`} className="button">
-              Edit
+            <Link to={`/edit/${note.id}`} className="icon">
+              <FontAwesomeIcon icon={faEdit} />
             </Link>
-          </td>
-          <td>
-            <button onClick={() => onDeleteClicked(note.id)}>Delete</button>
+            <FontAwesomeIcon
+              icon={faTimes}
+              onClick={() => onDeleteClicked(note.id)}
+              className="icon"
+            />
           </td>
         </tr>
       ))
@@ -58,7 +62,6 @@ export const NotesList = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th></th>
             <th></th>
           </tr>
         </thead>
