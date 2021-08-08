@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 nav {
   display: flex;
   padding: 0;
@@ -30,4 +36,32 @@ nav section {
   cursor: pointer;
   color: #404040;
   margin-left: 5px;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.editor form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editor textarea {
+  flex: 1;
+}
+
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }

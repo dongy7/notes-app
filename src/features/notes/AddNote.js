@@ -31,30 +31,39 @@ export const AddNote = () => {
   }
 
   return (
-    <div>
-      <h2>Create New Note</h2>
-      <form>
-        <label htmlFor="noteTitle">Note Title:</label>
-        <input
-          type="text"
-          id="noteTitle"
-          name="noteTitle"
-          placeholder="Note title"
-          value={title}
-          onChange={onTitleChanged}
-        />
-        <label htmlFor="postContent">Content:</label>
-        <textarea
-          id="noteContent"
-          name="noteContent"
-          value={content}
-          onChange={onContentChanged}
-          rows={30}
-        />
-      </form>
-      <button type="button" onClick={onCreateClicked}>
-        Create
-      </button>
+    <div className="editor">
+      <div className="editor-header">
+        <h2>Create New Note</h2>
+      </div>
+      <div className="editor-form">
+        <form>
+          <div className="form-title">
+            <label htmlFor="noteTitle">Note Title:</label>
+            <input
+              type="text"
+              id="noteTitle"
+              name="noteTitle"
+              placeholder="Note title"
+              value={title}
+              onChange={onTitleChanged}
+            />
+          </div>
+          <div className="form-content">
+            <label htmlFor="postContent">Content:</label>
+            <textarea
+              id="noteContent"
+              name="noteContent"
+              value={content}
+              onChange={onContentChanged}
+            />
+          </div>
+        </form>
+      </div>
+      <div className="editor-footer">
+        <button type="button" onClick={onCreateClicked}>
+          Create
+        </button>
+      </div>
     </div>
   )
 }
