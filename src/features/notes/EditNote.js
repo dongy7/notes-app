@@ -65,7 +65,7 @@ export const EditNote = ({ match }) => {
         </form>
       </div>
       <div className="editor-footer">
-        <button type="button" onClick={onSaveClicked}>
+        <button type="button" onClick={onSaveClicked} disabled={!canSave}>
           Save
         </button>
       </div>

@@ -65,3 +65,8 @@ nav section {
   flex-direction: column;
   flex-grow: 1;
 }
+
+button:disabled,
+button:disabled:hover {
+  opacity: 0.5;
+}

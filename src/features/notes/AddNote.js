@@ -65,7 +65,7 @@ export const AddNote = () => {
         </form>
       </div>
       <div className="editor-footer">
-        <button type="button" onClick={onCreateClicked}>
+        <button type="button" onClick={onCreateClicked} disabled={!canAdd}>
           Create
         </button>
       </div>
