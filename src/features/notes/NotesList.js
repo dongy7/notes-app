@@ -4,6 +4,7 @@ import { unwrapResult } from '@reduxjs/toolkit'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { format, parseISO } from 'date-fns'
 
 import { fetchNotes, deleteNote } from './notesSlice'
 
@@ -44,6 +45,7 @@ export const NotesList = () => {
       .map((note) => (
         <tr key={note.id}>
           <td>{note.title}</td>
+          <td>{format(parseISO(note.date), 'MM/dd/yyyy hh:mm aaa')}</td>
           <td>
             <Link to={`/edit/${note.id}`} className="icon">
               <FontAwesomeIcon icon={faEdit} />
@@ -62,6 +64,7 @@ export const NotesList = () => {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Modified</th>
             <th></th>
           </tr>
         </thead>

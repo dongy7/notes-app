@@ -11,6 +11,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
+    "date-fns": "^2.23.0",
     "faker": "^5.5.3",
     "miragejs": "^0.1.41",
     "prettier": "^2.3.2",
