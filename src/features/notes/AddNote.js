@@ -45,7 +45,7 @@ export const AddNote = () => {
         <h2>Create New Note</h2>
       </div>
       <div className="editor-form">
-        <form>
+        <form onSubmit={(e) => e.preventDefault()}>
           <div className="form-title">
             <label htmlFor="noteTitle">Note Title:</label>
             <input
