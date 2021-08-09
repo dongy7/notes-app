@@ -1,7 +1,13 @@
 {
   "name": "notes-app",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "author": {
+    "name": "Dong Yeop Lee",
+    "email": "dongy7@gmail.com",
+    "url": "https://dongy7.github.io/"
+  },
+  "description": "A React Redux web app for managing notes",
+  "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
